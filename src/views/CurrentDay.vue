@@ -2,7 +2,7 @@
     <div class="swiper-slide current-day-ctn">
       <CurrentDayItem v-bind:weather="currentWeather" />
       <div class="current-day-bg"></div>
-      <div class="swiper-btn" @click="rotate(); $emit('swipeUp')">&lt;&lt;░░</div>
+      <div class="swiper-btn" @click="rotate(); $emit('swipeUp')"></div>
     </div>
 </template>
 
@@ -33,7 +33,7 @@ export default {
 
 <style lang="scss" scoped>
 .current-day-ctn {
-  height: 100vh;
+  height: 100%;
   padding: 10px;
 }
 .current-day-bg {
@@ -51,16 +51,31 @@ export default {
   font-family: 'Roboto', sans-serif;
   position: absolute;
   bottom: 50px;
-  right: 0;
-  transform: rotate(90deg);
+  right: 19px;
+  background-image: url(../assets/touch.svg);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  width: 10vw;
+  height: 10vw;
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+  animation: 1s wiggle 1s infinite;
+  transition: opacity .3s;
 
   &.active {
-    transform: rotate(-90deg);
+    opacity: .1;
   }
 }
 
 @keyframes cloudMoving {
   0% {transform: translateX(0%)}
   100% {transform: translateX(-50%)}
+}
+
+@keyframes wiggle {
+  0% {transform: rotate(0deg)}
+  20% {transform: rotate(5deg)}
+  40% {transform: rotate(-5deg)}
+  60% {transform: rotate(5deg)}
+  100% {transform: rotate(0deg)}
 }
 </style>

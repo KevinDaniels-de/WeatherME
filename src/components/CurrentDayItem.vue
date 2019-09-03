@@ -87,7 +87,7 @@ export default {
     align-items: flex-start;
     justify-content: space-between;
     height: 100%;
-    filter: drop-shadow(1px 1px 0px rgba(0,0,0,.2));
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
 
     &.active {
       .current-day-forecast, 
@@ -97,7 +97,7 @@ export default {
       }
 
       .current-day-weather {
-        transform: translateY(100%) scale(.7);
+        transform: translateY(25vh) scale(.8);
       }
     }
 
@@ -108,12 +108,13 @@ export default {
         h5 {
             line-height: 100%;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            font-size: 1.2rem;
+            letter-spacing: 3px;
+            font-size: 3.3vw;
+            margin-bottom: 5px;
+        }
 
-            span {
-                font-size: 1.6rem;
-            }
+        span {
+            font-size: 9vw;
         }
     }
 
@@ -127,13 +128,13 @@ export default {
         transition: all .3s;
 
         > svg {
-            font-size: 11rem;
+            font-size: 35vw;
             display: block;
             margin: 0 auto 15px auto;
         }
 
         h2 {
-            font-size: 6rem;
+            font-size: 20vw;
             letter-spacing: 0;
             display: inline-block;
             position: relative;
@@ -150,10 +151,13 @@ export default {
     }
 
     .current-weater-location {
-      transition: all .3s;
+        transition: all .3s;
+        font-size: 8vw;
+        align-self: flex-end;
+        margin-bottom: 25px;
 
         span {
-            font-size: 1.2rem;
+            font-size: 5vw;
             display: inline-block;
             vertical-align: bottom;
             margin-left: 10px;

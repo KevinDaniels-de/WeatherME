@@ -113,7 +113,7 @@ export default {
     }
 
     div {
-        font-size: 1.4rem;
+        font-size: 3vw;
         width: 33%;
 
         &:last-of-type {
