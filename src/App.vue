@@ -186,7 +186,12 @@ export default {
         var local = localStorage.getItem('current');
         this.currentWeather = JSON.parse(local);
         var date = localStorage.getItem('savedate');
-        console.error("Verbindungsfehler! Die letzten gespeicherten Daten werden angezeigt");
+        
+        if(err["request"].status == 429) {
+          console.error("API Key überlastet!");
+        } else {
+          console.error("Verbindungsfehler! Die letzten gespeicherten Daten werden angezeigt");
+        }
       });
     }
   }
