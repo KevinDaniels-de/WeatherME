@@ -1,9 +1,9 @@
 <template>
   <div class="current-day-ctn">
-      <section v-cloak v-if="isGeoOn()" class="current-day-section">
+      <section v-cloak class="current-day-section">
         <div class="current-day-forecast">
-          <h5>{{this.weather.day}}</h5>
-          <span>{{this.weather.desc}}</span>
+          <h5>{{currentWeather.day}}</h5>
+          <span>{{currentWeather.desc}}</span>
         </div>
         <div class="current-day-weather">
           <font-awesome-icon v-if="isSun() && isDay()" icon="sun" />
@@ -13,11 +13,11 @@
           <font-awesome-icon v-else-if="isThunder()" icon="bolt" />
           <font-awesome-icon v-else-if="isSnow()" icon="snowflake" />
           <font-awesome-icon v-else icon="smog" />
-          <h2>{{this.weather.temp}}<span>{{this.weather.tempMax}}</span></h2>
+          <h2>{{currentWeather.temp}}<span>{{currentWeather.tempMax}}</span></h2>
         </div>
         <div class="current-weater-location">
           <font-awesome-icon icon="map-marker-alt" />
-          <span> {{this.weather.place}}</span>
+          <span> {{currentWeather.place}}</span>
         </div>
       </section>
   </div>
@@ -26,7 +26,11 @@
 <script>
 export default {
   name: 'currentdayitem',
-  props: ["weather"],
+  computed: {
+    currentWeather() {
+      return this.$store.state.currentWeather
+    }
+  },
   methods: {
     isDay() {
       var d = new Date();
@@ -37,37 +41,31 @@ export default {
       return false;
     },
     isSun() {
-      if(this.weather.icon.includes("01"))
+      if(this.currentWeather.icon.includes("01"))
         return true;
 
       return false;
     },
     isCloud() {
-      if(this.weather.icon.includes("02") || this.weather.icon.includes("03") ||this.weather.icon.includes("04"))
+      if(this.currentWeather.icon.includes("02") || this.currentWeather.icon.includes("03") ||this.currentWeather.icon.includes("04"))
         return true;
 
       return false;
     },
     isRain() {
-      if(this.weather.icon.includes("09") || this.weather.icon.includes("10"))
+      if(this.currentWeather.icon.includes("09") || this.currentWeather.icon.includes("10"))
         return true;
 
       return false;
     },
     isThunder() {
-      if(this.weather.icon.includes("11"))
+      if(this.currentWeather.icon.includes("11"))
         return true;
 
       return false;
     },
     isSnow() {
-      if(this.weather.icon.includes("13"))
-        return true;
-
-      return false;
-    },
-    isGeoOn() {
-      if (this.weather.active)
+      if(this.currentWeather.icon.includes("13"))
         return true;
 
       return false;

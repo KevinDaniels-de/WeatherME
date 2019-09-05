@@ -1,6 +1,6 @@
 <template>
     <div class="swiper-slide current-day-ctn">
-      <CurrentDayItem v-bind:weather="currentWeather" />
+      <CurrentDayItem />
       <div class="current-day-bg"></div>
       <div class="swiper-btn" @click="rotate(); $emit('swipeUp')"></div>
     </div>
@@ -12,7 +12,6 @@ import CurrentDayItem from '@/components/CurrentDayItem'
 
 export default {
   name: 'currentday',
-  props: ["currentWeather"],
   components: {
     CurrentDayItem
   },

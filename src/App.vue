@@ -3,8 +3,8 @@
     <div class="app-bg"></div>
     <div class="swiper-container">
       <div class="swiper-wrapper">
-        <CurrentDay v-bind:currentWeather="currentWeather" v-on:swipeUp="swipeUp" />
-        <NextDays v-on:reloadData="startApp" v-bind:forecastWeather="forecastWeather"/>
+        <CurrentDay v-on:swipeUp="swipeUp" />
+        <NextDays v-on:reloadData="startApp" />
       </div>
     </div>
   </div>
@@ -16,17 +16,12 @@ import NextDays from '@/views/NextDays.vue'
 import Swiper from 'swiper'
 import 'swiper/dist/css/swiper.min.css'
 import axios from 'axios'
+import { mapState } from 'vuex'
  
 let swiper, lat, long;
 
 export default {
   name: 'app',
-  data() {
-    return {
-      currentWeather: [],
-      forecastWeather: []
-    }
-  },
   components: {
     CurrentDay,
     NextDays
@@ -37,7 +32,6 @@ export default {
   },
   mounted() {
     this.startApp(this);
-
     var t = this;
 
     swiper = new Swiper('.swiper-container', {
@@ -63,6 +57,7 @@ export default {
     window.addEventListener("resize", t.adjustHeight);
     t.adjustHeight();
   },
+  computed: mapState(['currentWeather', 'forecastWeather']),
   methods: {
     changeBackground() {
       var d = new Date(this.currentWeather.time);
@@ -81,119 +76,25 @@ export default {
       if(swiper.isEnd) swiper.slidePrev();
       else swiper.slideNext();
     },
-    outputDate(dateObject) {
-      switch (dateObject.getDay()) {
-        case 1:
-          return "Montag";
-          break;
-
-        case 2:
-          return "Dienstag";
-          break;
-
-        case 3:
-          return "Mittwoch";
-          break;
-
-        case 4:
-          return "Donnerstag";
-          break;
-
-        case 5:
-          return "Freitag";
-          break;
-
-        case 6:
-          return "Samstag";
-          break;
-
-        default:
-          return "Sonntag";
-          break;
-      }
-    },
     startApp() {
       var t = this;
 
       if ("geolocation" in navigator) {
         /* geolocation is available */
         navigator.geolocation.getCurrentPosition(function(position) {
-          if(lat == null) {
-            lat = position.coords.latitude;
-            long = position.coords.longitude;
-          }
-
+          lat = position.coords.latitude;
+          long = position.coords.longitude;
+          
           // console.log(lat + " / " + long);
-          t.getData(lat, long);
+          const coords = {x: lat, y: long};
+          
+          t.$store.dispatch('updateCurrent', coords);
+          t.$store.dispatch('updateForecast', coords);
         });
       } else {
         /* geolocation IS NOT available */
       }
     },
-    getData(lat, long) {
-      axios.get("https://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+long+"&units=metric&lang=de&appid=86e998952dbf353098a6c9df63c8fb6d")
-      .then(res => {
-        console.log("##### NEW DATA #####");
-
-        var arr = [];
-        res.data.list.forEach(e => {
-          var date = new Date(e.dt*1000);
-          var curr = new Date();
-
-          if(date.getHours() == 14 && curr.getDay() != date.getDay())
-            arr.push(e);
-        });
-
-        localStorage.setItem('savedate', new Date());
-        localStorage.setItem('forecast', JSON.stringify(arr));
-
-        this.forecastWeather = arr;
-      })
-      .catch(err => {
-        console.log(err);
-        var local = localStorage.getItem('forecast');
-        this.forecastWeather = JSON.parse(local);
-      });
-
-      axios.get("https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+long+"&units=metric&lang=de&appid=86e998952dbf353098a6c9df63c8fb6d")
-      .then(res => {
-        const weather = {
-          active: false,
-          temp: "",
-          tempMax: "",
-          place: "",
-          day: "",
-          desc: "",
-          icon: "",
-          time: ""
-        };
-
-        weather.active = true;
-        weather.temp = (res.data.main.temp | 0) + "°";
-        weather.tempMax = (res.data.main.temp_max | 0) + "°";
-        weather.place = res.data.name;
-        weather.desc = res.data.weather[0].description;
-        weather.icon = res.data.weather[0].icon;
-        weather.time = res.data.coord.dt;
-        weather.day = this.outputDate(new Date(weather.time * 1000));
-
-        localStorage.setItem('current', JSON.stringify(weather));
-
-        this.currentWeather = weather;
-      })
-      .catch(err => {
-        console.log(err);
-        var local = localStorage.getItem('current');
-        this.currentWeather = JSON.parse(local);
-        var date = localStorage.getItem('savedate');
-        
-        if(err["request"].status == 429) {
-          console.error("API Key überlastet!");
-        } else {
-          console.error("Verbindungsfehler! Die letzten gespeicherten Daten werden angezeigt");
-        }
-      });
-    }
   }
 }
 </script>

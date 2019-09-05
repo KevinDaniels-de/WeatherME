@@ -1,6 +1,6 @@
 <template>
     <div class="swiper-slide forecast-ctn">
-        <NextDaysList v-bind:forecastWeather="forecastWeather" @reloadData="reloadData" />
+        <NextDaysList @reloadData="reloadData" />
     </div>
 </template>
 
@@ -10,7 +10,6 @@ import NextDaysList from '@/components/NextDaysList'
 
 export default {
   name: 'nextdays',
-  props: ["forecastWeather"],
   components: {
     NextDaysList
   },

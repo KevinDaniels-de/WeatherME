@@ -1,21 +1,24 @@
 <template>
   <div class="nextday-list-ctn">
-    <NextDaysItem v-for="weather in this.forecastWeather" v-bind:key="weather.dt" v-bind:weather="weather"/>
+    <NextDaysItem v-for="weather in forecastWeather" v-bind:key="weather.id" v-bind:weather="weather"/>
     <div class="btn" @click="reloadData"><font-awesome-icon icon="redo-alt" /> Neuladen</div>
   </div>
 </template>
 
 <script>
 import NextDaysItem from '@/components/NextDaysItem'
-import axios from 'axios'
 
 let lat, long;
 
 export default {
   name: 'nextdayslist',
-  props: ["forecastWeather"],
   components: {
     NextDaysItem
+  },
+  computed: {
+    forecastWeather() {
+      return this.$store.state.forecastWeather
+    },
   },
   methods: {
     reloadData() {
