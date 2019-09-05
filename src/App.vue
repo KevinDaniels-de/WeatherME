@@ -31,8 +31,9 @@ export default {
     CurrentDay,
     NextDays
   },
-  beforeMount() {
-    
+  updated() {
+    lat = null;
+    long = null;
   },
   mounted() {
     this.startApp(this);
@@ -64,7 +65,7 @@ export default {
   },
   methods: {
     changeBackground() {
-      var d = new Date();
+      var d = new Date(this.currentWeather.time);
       var n = d.getHours();
 
       if(n < 6) document.querySelector('.app-bg').classList.add('night');
@@ -80,10 +81,39 @@ export default {
       if(swiper.isEnd) swiper.slidePrev();
       else swiper.slideNext();
     },
+    outputDate(dateObject) {
+      switch (dateObject.getDay()) {
+        case 1:
+          return "Montag";
+          break;
+
+        case 2:
+          return "Dienstag";
+          break;
+
+        case 3:
+          return "Mittwoch";
+          break;
+
+        case 4:
+          return "Donnerstag";
+          break;
+
+        case 5:
+          return "Freitag";
+          break;
+
+        case 6:
+          return "Samstag";
+          break;
+
+        default:
+          return "Sonntag";
+          break;
+      }
+    },
     startApp() {
       var t = this;
-
-      t.changeBackground();
 
       if ("geolocation" in navigator) {
         /* geolocation is available */
@@ -114,9 +144,16 @@ export default {
             arr.push(e);
         });
 
+        localStorage.setItem('savedate', new Date());
+        localStorage.setItem('forecast', JSON.stringify(arr));
+
         this.forecastWeather = arr;
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        var local = localStorage.getItem('forecast');
+        this.forecastWeather = JSON.parse(local);
+      });
 
       axios.get("https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+long+"&units=metric&lang=de&appid=86e998952dbf353098a6c9df63c8fb6d")
       .then(res => {
@@ -127,51 +164,30 @@ export default {
           place: "",
           day: "",
           desc: "",
-          icon: ""
+          icon: "",
+          time: ""
         };
 
         weather.active = true;
-        weather.temp = res.data.main.temp | 0;
-        weather.tempMax = res.data.main.temp_max | 0;
+        weather.temp = (res.data.main.temp | 0) + "°";
+        weather.tempMax = (res.data.main.temp_max | 0) + "°";
         weather.place = res.data.name;
         weather.desc = res.data.weather[0].description;
-        weather.icon = res.data.weather[0].icon; 
+        weather.icon = res.data.weather[0].icon;
+        weather.time = res.data.coord.dt;
+        weather.day = this.outputDate(new Date(weather.time * 1000));
 
-        var d = new Date(res.data.dt * 1000);
-
-        switch (d.getDay()) {
-          case 1:
-            weather.day = "Montag";
-            break;
-
-          case 2:
-            weather.day = "Dienstag";
-            break;
-
-          case 3:
-            weather.day = "Mittwoch";
-            break;
-
-          case 4:
-            weather.day = "Donnerstag";
-            break;
-
-          case 5:
-            weather.day = "Freitag";
-            break;
-
-          case 6:
-            weather.day = "Samstag";
-            break;
-
-          default:
-            weather.day = "Sonntag";
-            break;
-        }
+        localStorage.setItem('current', JSON.stringify(weather));
 
         this.currentWeather = weather;
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        var local = localStorage.getItem('current');
+        this.currentWeather = JSON.parse(local);
+        var date = localStorage.getItem('savedate');
+        console.error("Verbindungsfehler! Die letzten gespeicherten Daten werden angezeigt");
+      });
     }
   }
 }

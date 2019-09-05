@@ -13,7 +13,7 @@
           <font-awesome-icon v-else-if="isThunder()" icon="bolt" />
           <font-awesome-icon v-else-if="isSnow()" icon="snowflake" />
           <font-awesome-icon v-else icon="smog" />
-          <h2>{{this.weather.temp}}°<span>{{this.weather.tempMax}}°</span></h2>
+          <h2>{{this.weather.temp}}<span>{{this.weather.tempMax}}</span></h2>
         </div>
         <div class="current-weater-location">
           <font-awesome-icon icon="map-marker-alt" />
@@ -24,9 +24,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-let lat, long;
-
 export default {
   name: 'currentdayitem',
   props: ["weather"],
@@ -114,7 +111,7 @@ export default {
         }
 
         span {
-            font-size: 9vw;
+            font-size: 8.8vw;
         }
     }
 
