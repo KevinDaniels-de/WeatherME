@@ -105,7 +105,7 @@ export default {
             text-transform: uppercase;
             letter-spacing: 3px;
             font-size: 3.3vw;
-            margin-bottom: 5px;
+            margin-bottom: 4%;
         }
 
         span {

@@ -26,12 +26,10 @@ export default {
     CurrentDay,
     NextDays
   },
-  updated() {
-    lat = null;
-    long = null;
+  created() {
+    this.startApp(this);
   },
   mounted() {
-    this.startApp(this);
     var t = this;
 
     swiper = new Swiper('.swiper-container', {
@@ -57,17 +55,12 @@ export default {
     window.addEventListener("resize", t.adjustHeight);
     t.adjustHeight();
   },
-  computed: mapState(['currentWeather', 'forecastWeather']),
+  computed: {
+    currentWeather() {
+      return this.$store.state.currentWeather
+    }
+  },
   methods: {
-    changeBackground() {
-      var d = new Date(this.currentWeather.time);
-      var n = d.getHours();
-
-      if(n < 6) document.querySelector('.app-bg').classList.add('night');
-      if(n < 12) document.querySelector('.app-bg').classList.add('morning');
-      else if(n < 18) document.querySelector('.app-bg').classList.add('day');
-      else document.querySelector('.app-bg').classList.add('evening');
-    },
     adjustHeight() {
       document.getElementsByClassName('swiper-container')[0].style.height = window.innerHeight + 'px';
       swiper.update();
@@ -90,11 +83,22 @@ export default {
           
           t.$store.dispatch('updateCurrent', coords);
           t.$store.dispatch('updateForecast', coords);
+
+          t.changeBackground();
         });
       } else {
         /* geolocation IS NOT available */
       }
     },
+    changeBackground() {
+      var d = new Date(this.currentWeather.time);
+      var n = d.getHours();
+
+      if(n < 6) document.querySelector('.app-bg').classList.add('night');
+      if(n < 12) document.querySelector('.app-bg').classList.add('morning');
+      else if(n < 18) document.querySelector('.app-bg').classList.add('day');
+      else document.querySelector('.app-bg').classList.add('evening');
+    }
   }
 }
 </script>
