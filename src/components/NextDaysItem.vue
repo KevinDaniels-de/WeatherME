@@ -1,13 +1,7 @@
 <template>
     <div class="nextday-item-ctn">
         <div>{{weather.day}}</div>
-          <font-awesome-icon v-if="isSun() && isDay()" icon="sun" />
-          <font-awesome-icon v-else-if="isSun() && !isDay()" icon="moon" />
-          <font-awesome-icon v-else-if="isCloud()" icon="cloud" />
-          <font-awesome-icon v-else-if="isRain()" icon="cloud-rain" />
-          <font-awesome-icon v-else-if="isThunder()" icon="bolt" />
-          <font-awesome-icon v-else-if="isSnow()" icon="snowflake" />
-          <font-awesome-icon v-else icon="smog" />
+          <font-awesome-icon :icon="weather.icon"></font-awesome-icon>
         <div>{{weather.temp}}/<span>{{weather.tempMax}}</span></div>
     </div>
 </template>

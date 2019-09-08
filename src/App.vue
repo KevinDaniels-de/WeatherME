@@ -214,9 +214,9 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-@media (orientation: landscape) and (max-width : 815px) {
-  .swiper-container {
-    display: none;
-  }
-}
+// @media (orientation: landscape) and (max-width : 815px) {
+//   .swiper-container {
+//     display: none;
+//   }
+// }
 </style>

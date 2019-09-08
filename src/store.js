@@ -6,8 +6,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    currentWeather: {},
-    forecastWeather: []
+    currentWeather: JSON.parse(localStorage.getItem('current')),
+    forecastWeather: JSON.parse(localStorage.getItem('forecast'))
   },
   mutations: {
     SET_CURRENT(state, currentWeather) {
@@ -38,7 +38,26 @@ export default new Vuex.Store({
         weather.tempMax = (res.data.main.temp_max | 0) + "°";
         weather.place = res.data.name;
         weather.desc = res.data.weather[0].description;
-        weather.icon = res.data.weather[0].icon;
+
+        var ico = res.data.weather[0].icon;
+        var d = new Date();
+        
+        if(ico.includes("01"))
+          if(d.getHours() > 6 && d.getHours() < 22)
+            weather.icon = "sun";
+          else
+            weather.icon = "moon";
+        else if(ico.includes("02") || ico.includes("03") || ico.includes("04"))
+          weather.icon = "cloud";
+        else if(ico.includes("09") || ico.includes("10"))
+          weather.icon = "cloud-rain";
+        else if(ico.includes("11"))
+          weather.icon = "bolt";
+        else if(ico.includes("13"))
+          weather.icon = "snowflake";
+        else
+          weather.icon = "smog";
+
         weather.time = res.data.coord.dt;
 
         switch (new Date(weather.time * 1000)) {
@@ -137,7 +156,25 @@ export default new Vuex.Store({
               break;
           }
 
-          singleWeather.icon = e.weather[0].icon;
+          var ico = e.weather[0].icon;
+          var d = new Date();
+
+          if(ico.includes("01"))
+            if(d.getHours() > 6 && d.getHours() < 22)
+              singleWeather.icon = "sun";
+            else
+              singleWeather.icon = "moon";
+          else if(ico.includes("02") || ico.includes("03") || ico.includes("04"))
+            singleWeather.icon = "cloud";
+          else if(ico.includes("09") || ico.includes("10"))
+            singleWeather.icon = "cloud-rain";
+          else if(ico.includes("11"))
+            singleWeather.icon = "bolt";
+          else if(ico.includes("13"))
+            singleWeather.icon = "snowflake";
+          else
+            singleWeather.icon = "smog";
+
           singleWeather.temp = (e.main.temp | 0) + "°";
           singleWeather.tempMax = (e.main.temp_max | 0) + "°";
 
