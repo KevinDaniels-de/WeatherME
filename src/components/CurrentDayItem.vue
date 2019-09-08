@@ -113,4 +113,54 @@ export default {
         }
     }
 }
+
+@media (orientation: landscape) {
+.current-day-section {
+
+    &.active {
+      .current-day-forecast, 
+      .current-weater-location {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .current-day-weather {
+        transform: translateY(25vh) scale(.6);
+      }
+    }
+
+    .current-day-forecast {
+        h5 {
+            font-size: 2vw;
+            margin-bottom: 2%;
+        }
+
+        span {
+            font-size: 5vw;
+        }
+    }
+
+    .current-day-weather {
+
+        > svg {
+            font-size: 15vw;
+            margin: 0 auto 10px auto;
+        }
+
+        h2 {
+            font-size: 10vw;
+        }
+    }
+
+    .current-weater-location {
+        font-size: 3vw;
+        margin-bottom: 55px;
+
+        span {
+            font-size: 4vw;
+            margin-left: 12px;
+        }
+    }
+}
+}
 </style>

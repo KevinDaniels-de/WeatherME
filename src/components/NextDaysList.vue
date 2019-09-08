@@ -43,4 +43,10 @@ export default {
     border-color: black;
     margin: 20px auto 0 auto;
 }
+
+@media (orientation: landscape) {
+  .nextday-list-ctn {
+    justify-content: space-between;
+  }
+}
 </style>

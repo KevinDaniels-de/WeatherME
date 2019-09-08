@@ -35,6 +35,7 @@ export default {
   height: 100%;
   padding: 10px;
 }
+
 .current-day-bg {
   height: 40px;
   background-image: url(../assets/clouds.svg);
@@ -76,5 +77,22 @@ export default {
   40% {transform: rotate(-5deg)}
   60% {transform: rotate(5deg)}
   100% {transform: rotate(0deg)}
+}
+
+@media (orientation: landscape) {
+  .current-day-ctn {
+    padding: 10px;
+  }
+
+  .swiper-btn {
+    bottom: 55px;
+    right: 30px;
+    width: 8vw;
+    height: 8vw;
+
+    &.active {
+      opacity: .1;
+    }
+  }
 }
 </style>

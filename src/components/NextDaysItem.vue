@@ -85,4 +85,14 @@ export default {
         opacity: .4;
     }
 }
+
+@media (orientation: landscape) {
+    .nextday-item-ctn {
+        width: 48%;
+
+        &:nth-last-child(2) {
+            border-bottom: 1px solid #00000026;
+        }
+    }
+}
 </style>
