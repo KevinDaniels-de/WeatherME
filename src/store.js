@@ -92,6 +92,15 @@ export default new Vuex.Store({
 
         localStorage.setItem('current', JSON.stringify(weather));
 
+        let el = document.querySelector('.toast');
+
+        if(!el.classList.contains('active'))
+          el.classList.add('active');
+
+        setTimeout(() => {
+          el.classList.remove('active');
+        }, 1000);
+
         commit('SET_CURRENT', weather);
       })
       .catch(err => {
@@ -116,73 +125,75 @@ export default new Vuex.Store({
         var arr = [];
         res.data.list.forEach(e => {
 
-          const singleWeather = {
-            id: "",
-            day: "",
-            icon: "",
-            temp: "",
-            tempMax: ""
-          };
-
-          singleWeather.id = e.dt;
-
-          switch (new Date(singleWeather.id * 1000).getDay()) {
-            case 1:
-              singleWeather.day = "Montag";
-              break;
-    
-            case 2:
-              singleWeather.day = "Dienstag";
-              break;
-    
-            case 3:
-              singleWeather.day = "Mittwoch";
-              break;
-    
-            case 4:
-              singleWeather.day = "Donnerstag";
-              break;
-    
-            case 5:
-              singleWeather.day = "Freitag";
-              break;
-    
-            case 6:
-              singleWeather.day = "Samstag";
-              break;
-    
-            default:
-              singleWeather.day = "Sonntag";
-              break;
-          }
-
-          var ico = e.weather[0].icon;
-          var d = new Date();
-
-          if(ico.includes("01"))
-            if(d.getHours() > 6 && d.getHours() < 22)
-              singleWeather.icon = "sun";
-            else
-              singleWeather.icon = "moon";
-          else if(ico.includes("02") || ico.includes("03") || ico.includes("04"))
-            singleWeather.icon = "cloud";
-          else if(ico.includes("09") || ico.includes("10"))
-            singleWeather.icon = "cloud-rain";
-          else if(ico.includes("11"))
-            singleWeather.icon = "bolt";
-          else if(ico.includes("13"))
-            singleWeather.icon = "snowflake";
-          else
-            singleWeather.icon = "smog";
-
-          singleWeather.temp = (e.main.temp | 0) + "°";
-          singleWeather.tempMax = (e.main.temp_max | 0) + "°";
-
-          var date = new Date(singleWeather.id * 1000);
+          var date = new Date(e.dt * 1000);
           var curr = new Date();
 
-          if(date.getHours() == 14 && curr.getDay() != date.getDay())
+          if(date.getHours() == 13 && curr.getDay() != date.getDay()) {
+
+            const singleWeather = {
+              id: "",
+              day: "",
+              icon: "",
+              temp: "",
+              tempMax: ""
+            };
+
+            singleWeather.id = e.dt;
+
+            switch (new Date(singleWeather.id * 1000).getDay()) {
+              case 1:
+                singleWeather.day = "Montag";
+                break;
+      
+              case 2:
+                singleWeather.day = "Dienstag";
+                break;
+      
+              case 3:
+                singleWeather.day = "Mittwoch";
+                break;
+      
+              case 4:
+                singleWeather.day = "Donnerstag";
+                break;
+      
+              case 5:
+                singleWeather.day = "Freitag";
+                break;
+      
+              case 6:
+                singleWeather.day = "Samstag";
+                break;
+      
+              default:
+                singleWeather.day = "Sonntag";
+                break;
+            }
+
+            var ico = e.weather[0].icon;
+            var d = new Date();
+
+            if(ico.includes("01"))
+              if(d.getHours() > 6 && d.getHours() < 22)
+                singleWeather.icon = "sun";
+              else
+                singleWeather.icon = "moon";
+            else if(ico.includes("02") || ico.includes("03") || ico.includes("04"))
+              singleWeather.icon = "cloud";
+            else if(ico.includes("09") || ico.includes("10"))
+              singleWeather.icon = "cloud-rain";
+            else if(ico.includes("11"))
+              singleWeather.icon = "bolt";
+            else if(ico.includes("13"))
+              singleWeather.icon = "snowflake";
+            else
+              singleWeather.icon = "smog";
+
+            singleWeather.temp = (e.main.temp | 0) + "°";
+            singleWeather.tempMax = (e.main.temp_max | 0) + "°";
+
             arr.push(singleWeather);
+          }
         });
 
         localStorage.setItem('savedate', new Date());

@@ -7,6 +7,9 @@
         <NextDays v-on:reloadData="startApp" />
       </div>
     </div>
+    <div class="toast">
+      <span>Daten wurden aktualisiert</span>
+    </div>
   </div>
 </template>
 
@@ -214,9 +217,28 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-// @media (orientation: landscape) and (max-width : 815px) {
-//   .swiper-container {
-//     display: none;
-//   }
-// }
+.toast {
+    position: fixed;
+    z-index: 1000;
+    background: #000000b0;
+    width: 90%;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 15px;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s ease-out;
+    border-radius: 10px;
+
+    span {
+        font-size: 1.6rem;
+    }
+
+    &.active {
+      opacity: 1;
+      visibility: visible;
+    }
+}
 </style>
