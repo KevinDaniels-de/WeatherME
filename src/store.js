@@ -58,7 +58,7 @@ export default new Vuex.Store({
         else
           weather.icon = "smog";
 
-        weather.time = res.data.coord.dt;
+        weather.time = res.data.dt;
 
         switch (new Date(weather.time * 1000)) {
           case 1:
