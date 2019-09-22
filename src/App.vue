@@ -94,13 +94,13 @@ export default {
       }
     },
     changeBackground() {
-      var d = new Date(this.currentWeather.time);
+      var d = new Date(this.currentWeather.time * 1000);
       var n = d.getHours();
 
-      if(n < 6) document.querySelector('.app-bg').classList.add('night');
-      if(n < 12) document.querySelector('.app-bg').classList.add('morning');
-      else if(n < 18) document.querySelector('.app-bg').classList.add('day');
-      else document.querySelector('.app-bg').classList.add('evening');
+      if(n >= 18) document.querySelector('.app-bg').classList.add('night');
+      else if(n >= 12) document.querySelector('.app-bg').classList.add('evening');
+      else if(n >= 6) document.querySelector('.app-bg').classList.add('day');
+      else document.querySelector('.app-bg').classList.add('morning');
     }
   }
 }
